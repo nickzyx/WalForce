@@ -1,0 +1,38 @@
+[
+  {
+    "id": "7c2cc9aa-f9ee-4cf1-9f46-0d1b7c8a7c11",
+    "firstName": "Maya",
+    "lastName": "Manager",
+    "email": "manager@walforce.local",
+    "role": "Manager",
+    "title": "Store Manager",
+    "passwordHash": "AQAAAAIAAYagAAAAEFchP5ye6Q0ExhHjArtOLxtRcSZ+E8SJQ6zQPhxn4Y2LKTrjDWgD1YH3NlepjAei2g=="
+  },
+  {
+    "id": "6d47dbbb-87e5-47de-a9c7-6d0a45b6f101",
+    "firstName": "Ava",
+    "lastName": "Diaz",
+    "email": "ava.diaz@walforce.local",
+    "role": "Employee",
+    "title": "Cashier",
+    "passwordHash": "AQAAAAIAAYagAAAAEL98GJKvBE96mltO2noIOGOr2fiZDgnkS2KYIxXUA+eHNNsKQ/ry7lA7U1ZcZ2sHEA=="
+  },
+  {
+    "id": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
+    "firstName": "Liam",
+    "lastName": "Nguyen",
+    "email": "liam.nguyen@walforce.local",
+    "role": "Employee",
+    "title": "Stock Associate",
+    "passwordHash": "AQAAAAIAAYagAAAAEEMiuQR+Or5y1k8D3pUdKftqxyHCt5HZub6kZWufEiknsQhTp9j99sQVx9RsIj81uw=="
+  },
+  {
+    "id": "1f3eb0cf-4be0-4b4f-93e1-7e8705af3303",
+    "firstName": "Zoe",
+    "lastName": "Patel",
+    "email": "zoe.patel@walforce.local",
+    "role": "Employee",
+    "title": "Customer Service",
+    "passwordHash": "AQAAAAIAAYagAAAAENfwttX+8OvoJHO/WvAaYuqslrU+L/dH3zdiBj86LpFJ/vIac7bLNExnlUg8OcxGZg=="
+  }
+]
