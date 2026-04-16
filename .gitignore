@@ -409,6 +409,12 @@ next-env.d.ts
 
 # repo-local tooling homes
 .dotnet/
+.dotnet-home/
+.codex-java-check/
+.codex-temp/
+.nuget-local/
+.tmp-verify/
+Backend/WebServer/appsettings.Development.json
 
 # nested Next.js apps
 **/.next/

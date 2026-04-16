@@ -1,0 +1,164 @@
+[
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da001",
+    "employeeId": "6d47dbbb-87e5-47de-a9c7-6d0a45b6f101",
+    "date": "2026-04-13",
+    "startTime": "08:00:00",
+    "endTime": "16:00:00",
+    "roleLabel": "Cashier",
+    "note": "Opening shift"
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da002",
+    "employeeId": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
+    "date": "2026-04-13",
+    "startTime": "12:00:00",
+    "endTime": "20:00:00",
+    "roleLabel": "Stock Associate",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da003",
+    "employeeId": "1f3eb0cf-4be0-4b4f-93e1-7e8705af3303",
+    "date": "2026-04-14",
+    "startTime": "09:00:00",
+    "endTime": "17:00:00",
+    "roleLabel": "Customer Service",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da004",
+    "employeeId": "6d47dbbb-87e5-47de-a9c7-6d0a45b6f101",
+    "date": "2026-04-15",
+    "startTime": "10:00:00",
+    "endTime": "18:00:00",
+    "roleLabel": "Cashier",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da005",
+    "employeeId": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
+    "date": "2026-04-15",
+    "startTime": "11:00:00",
+    "endTime": "19:00:00",
+    "roleLabel": "Stock Associate",
+    "note": "Truck delivery"
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da006",
+    "employeeId": "1f3eb0cf-4be0-4b4f-93e1-7e8705af3303",
+    "date": "2026-04-16",
+    "startTime": "13:00:00",
+    "endTime": "21:00:00",
+    "roleLabel": "Customer Service",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da007",
+    "employeeId": "6d47dbbb-87e5-47de-a9c7-6d0a45b6f101",
+    "date": "2026-04-17",
+    "startTime": "08:00:00",
+    "endTime": "16:00:00",
+    "roleLabel": "Cashier",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da008",
+    "employeeId": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
+    "date": "2026-04-18",
+    "startTime": "09:00:00",
+    "endTime": "17:00:00",
+    "roleLabel": "Stock Associate",
+    "note": "Weekend coverage"
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da009",
+    "employeeId": "1f3eb0cf-4be0-4b4f-93e1-7e8705af3303",
+    "date": "2026-04-19",
+    "startTime": "10:00:00",
+    "endTime": "18:00:00",
+    "roleLabel": "Customer Service",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da010",
+    "employeeId": "6d47dbbb-87e5-47de-a9c7-6d0a45b6f101",
+    "date": "2026-04-20",
+    "startTime": "08:00:00",
+    "endTime": "16:00:00",
+    "roleLabel": "Cashier",
+    "note": "Opening shift"
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da011",
+    "employeeId": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
+    "date": "2026-04-21",
+    "startTime": "12:00:00",
+    "endTime": "20:00:00",
+    "roleLabel": "Stock Associate",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da012",
+    "employeeId": "1f3eb0cf-4be0-4b4f-93e1-7e8705af3303",
+    "date": "2026-04-21",
+    "startTime": "09:00:00",
+    "endTime": "17:00:00",
+    "roleLabel": "Customer Service",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da013",
+    "employeeId": "6d47dbbb-87e5-47de-a9c7-6d0a45b6f101",
+    "date": "2026-04-22",
+    "startTime": "10:00:00",
+    "endTime": "18:00:00",
+    "roleLabel": "Cashier",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da014",
+    "employeeId": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
+    "date": "2026-04-23",
+    "startTime": "11:00:00",
+    "endTime": "19:00:00",
+    "roleLabel": "Stock Associate",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da015",
+    "employeeId": "1f3eb0cf-4be0-4b4f-93e1-7e8705af3303",
+    "date": "2026-04-24",
+    "startTime": "13:00:00",
+    "endTime": "21:00:00",
+    "roleLabel": "Customer Service",
+    "note": "Late support"
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da016",
+    "employeeId": "6d47dbbb-87e5-47de-a9c7-6d0a45b6f101",
+    "date": "2026-04-25",
+    "startTime": "09:00:00",
+    "endTime": "17:00:00",
+    "roleLabel": "Cashier",
+    "note": "Weekend coverage"
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da017",
+    "employeeId": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
+    "date": "2026-04-26",
+    "startTime": "09:00:00",
+    "endTime": "17:00:00",
+    "roleLabel": "Stock Associate",
+    "note": null
+  },
+  {
+    "id": "ce7af8ad-4f06-4e56-9601-b0c80e0da018",
+    "employeeId": "1f3eb0cf-4be0-4b4f-93e1-7e8705af3303",
+    "date": "2026-04-26",
+    "startTime": "10:00:00",
+    "endTime": "18:00:00",
+    "roleLabel": "Customer Service",
+    "note": null
+  }
+]

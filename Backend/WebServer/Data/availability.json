@@ -1,0 +1,169 @@
+[
+  {
+    "userId": "6d47dbbb-87e5-47de-a9c7-6d0a45b6f101",
+    "notes": "Updated by smoke tests.",
+    "days": [
+      {
+        "day": "Monday",
+        "windows": [
+          {
+            "startTime": "07:00:00",
+            "endTime": "15:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "windows": []
+      },
+      {
+        "day": "Wednesday",
+        "windows": []
+      },
+      {
+        "day": "Thursday",
+        "windows": []
+      },
+      {
+        "day": "Friday",
+        "windows": []
+      },
+      {
+        "day": "Saturday",
+        "windows": []
+      },
+      {
+        "day": "Sunday",
+        "windows": []
+      }
+    ]
+  },
+  {
+    "userId": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
+    "notes": "Can close most weekdays.",
+    "days": [
+      {
+        "day": "Monday",
+        "windows": [
+          {
+            "startTime": "12:00:00",
+            "endTime": "20:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Tuesday",
+        "windows": [
+          {
+            "startTime": "10:00:00",
+            "endTime": "18:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "windows": [
+          {
+            "startTime": "12:00:00",
+            "endTime": "20:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "windows": [
+          {
+            "startTime": "10:00:00",
+            "endTime": "18:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Friday",
+        "windows": [
+          {
+            "startTime": "12:00:00",
+            "endTime": "20:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "windows": [
+          {
+            "startTime": "09:00:00",
+            "endTime": "17:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "windows": []
+      }
+    ]
+  },
+  {
+    "userId": "1f3eb0cf-4be0-4b4f-93e1-7e8705af3303",
+    "notes": "Best coverage Tuesday through Sunday afternoon.",
+    "days": [
+      {
+        "day": "Monday",
+        "windows": []
+      },
+      {
+        "day": "Tuesday",
+        "windows": [
+          {
+            "startTime": "09:00:00",
+            "endTime": "17:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Wednesday",
+        "windows": [
+          {
+            "startTime": "09:00:00",
+            "endTime": "17:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Thursday",
+        "windows": [
+          {
+            "startTime": "13:00:00",
+            "endTime": "21:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Friday",
+        "windows": [
+          {
+            "startTime": "13:00:00",
+            "endTime": "21:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Saturday",
+        "windows": [
+          {
+            "startTime": "10:00:00",
+            "endTime": "18:00:00"
+          }
+        ]
+      },
+      {
+        "day": "Sunday",
+        "windows": [
+          {
+            "startTime": "10:00:00",
+            "endTime": "18:00:00"
+          }
+        ]
+      }
+    ]
+  }
+]

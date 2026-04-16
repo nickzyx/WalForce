@@ -1,6 +1,33 @@
 @WebServer_HostAddress = http://localhost:5041
+@EmployeeEmail = ava.diaz@walforce.local
+@ManagerEmail = manager@walforce.local
+@Password = WalForce!123
 
-GET {{WebServer_HostAddress}}/weatherforecast/
+### Login as employee
+POST {{WebServer_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{EmployeeEmail}}",
+  "password": "{{Password}}"
+}
+
+### Login as manager
+POST {{WebServer_HostAddress}}/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "{{ManagerEmail}}",
+  "password": "{{Password}}"
+}
+
+### OpenAPI document
+GET {{WebServer_HostAddress}}/
 Accept: application/json
 
-###
+### Swagger JSON
+GET {{WebServer_HostAddress}}/swagger/v1/swagger.json
+Accept: application/json
+
+### Swagger UI
+GET {{WebServer_HostAddress}}/swagger/index.html
