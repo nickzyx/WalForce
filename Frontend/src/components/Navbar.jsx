@@ -1,6 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
 
-// Shared navigation bar component
 function Navbar({ role }) {
   const navigate = useNavigate();
 

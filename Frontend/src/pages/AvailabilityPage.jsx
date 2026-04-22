@@ -2,7 +2,6 @@ import { useState } from "react";
 import Navbar from "../components/Navbar";
 import api from "../services/api";
 
-// Employee availability page
 function AvailabilityPage() {
   const [formData, setFormData] = useState({
     day: "",
@@ -22,13 +21,13 @@ function AvailabilityPage() {
     }));
   };
 
+// Testing data for UI testing (Just Frontend Testing)
 const handleSubmit = async (event) => {
   event.preventDefault();
   setMessage("");
   setError("");
 
   try {
-    // Temporary frontend-only test
     console.log("Submitted availability:", formData);
 
     setMessage("Availability submitted successfully.");
@@ -44,24 +43,26 @@ const handleSubmit = async (event) => {
 };
 
 /*
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    setMessage("");
-    setError("");
+Use this when the backend availability endpoint is available.
 
-    try {
-      await api.put("/me/availability", formData);
-      setMessage("Availability submitted successfully.");
-      setFormData({
-        day: "",
-        startTime: "",
-        endTime: "",
-      });
-    } catch (err) {
-      console.error(err);
-      setError("Failed to submit availability.");
-    }
-  };
+const handleSubmit = async (event) => {
+  event.preventDefault();
+  setMessage("");
+  setError("");
+
+  try {
+    await api.put("/me/availability", formData);
+    setMessage("Availability submitted successfully.");
+    setFormData({
+      day: "",
+      startTime: "",
+      endTime: "",
+    });
+  } catch (err) {
+    console.error(err);
+    setError("Failed to submit availability.");
+  }
+};
 */
 
   return (

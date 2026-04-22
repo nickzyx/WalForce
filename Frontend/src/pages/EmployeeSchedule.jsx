@@ -2,16 +2,15 @@ import { useEffect, useState } from "react";
 import Navbar from "../components/Navbar";
 import api from "../services/api";
 
-// Employee schedule page
 function EmployeeSchedule() {
   const [schedule, setSchedule] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
+// Testing data for UI testing (Just Frontend Testing)
  useEffect(() => {
   const fetchSchedule = async () => {
     try {
-      // Temporary dummy data for UI testing
       const dummySchedule = [
         {
           date: "2026-04-22",
@@ -44,7 +43,10 @@ function EmployeeSchedule() {
 
   fetchSchedule();
 }, []);
+
 /*
+Use this when the backend is connected and the schedule endpoint is available.
+
 useEffect(() => {
   const fetchSchedule = async () => {
     try {
@@ -61,6 +63,7 @@ useEffect(() => {
   fetchSchedule();
 }, []);
 */
+
   return (
     <div>
       <Navbar role="employee" />
