@@ -4,7 +4,12 @@ import viteLogo from './assets/vite.svg'
 import heroImg from './assets/hero.png'
 import './App.css'
 
-function App() {
+import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import EmployeePage from './pages/EmployeePage'
+import EmployeeSchedule from './pages/EmployeeSchedule'
+import AvailabilityPage from './pages/AvailabilityPage'
+
+function LandingPage() {
   const [count, setCount] = useState(0)
 
   return (
@@ -117,5 +122,16 @@ function App() {
     </>
   )
 }
-
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/employee" element={<EmployeePage />} />
+        <Route path="/employee/schedule" element={<EmployeeSchedule />} />
+        <Route path="/employee/availability" element={<AvailabilityPage />} />
+      </Routes>
+    </BrowserRouter>
+  );
+}
 export default App
