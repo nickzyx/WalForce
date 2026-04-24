@@ -2,74 +2,82 @@
 
 ## Backend Overview
 
-The backend lives in `Backend/WebServer`. It is a minimal API server with:
+The backend lives in `Backend/WebServer`. It is an ASP.NET Core minimal API server with:
 
-- JSON-backed repositories under `Backend/WebServer/Data`
-- Bearer-token auth with seeded employee and manager users
-- Employee endpoints for login, profile, schedule, and weekly availability
-- Manager endpoints for login, roster, and team schedule
+- PostgreSQL-backed repositories in Development
+- JSON-backed fallback repositories when no database connection string is configured
+- Employee endpoints for profile, schedule, and weekly availability
+- Manager endpoints for roster and team schedule
 - Swagger UI at `/swagger`
 
-## Developer Setup
+## Current Database
+
+Local Development uses PostgreSQL through `Backend/WebServer/appsettings.Development.json`:
+
+```json
+"Database": {
+  "ConnectionString": "Host=localhost;Port=5432;Database=walforce;Username=postgres;Password=postgrespwd"
+}
+```
+
+The active schema is:
+
+- `public.employees`
+- `public.logins`
+- `public.availability`
+- `public.shifts`
+
+Schedule endpoints read from `public.shifts`. Availability endpoints read and write `public.availability`.
+
+Database files are under `Backend/Database`:
+
+- `dump-walforce-202604241135.sql`: original backup
+- `dump-walforce-202604241247.sql`: current backup with the `shifts` table
+- `20260424-create-and-seed-shifts.sql`: script that creates and seeds `public.shifts`
+
+## Setup
 
 ### Prerequisites
 
 - .NET 10 SDK
+- PostgreSQL running on `localhost:5432`
 
-### Setup
+### Restore and Build
 
 From the repo root:
 
 ```powershell
 dotnet restore Backend/WebServer/WebServer.csproj
+dotnet build Backend/WebServer/WebServer.csproj
 ```
 
-### Configure local development settings
-
-`Backend/WebServer/appsettings.json` is the checked-in example file. Put real local values in `Backend/WebServer/appsettings.Development.json`, which is ignored by git.
-
-Use this shape:
-
-```json
-{
-  "Auth": {
-    "SigningKey": "replace-with-a-long-random-development-key"
-  }
-}
-```
-
-### Run the backend
+### Run the Backend
 
 ```powershell
 dotnet run --project Backend/WebServer --launch-profile http
 ```
 
-The default local URL is `http://localhost:5041`.
+The default local URL is:
 
-### How to use Swagger
+```text
+http://localhost:5041
+```
+
+The `http` launch profile sets `ASPNETCORE_ENVIRONMENT=Development`, so the server automatically reads `appsettings.Development.json` and connects to PostgreSQL.
+
+## Swagger
 
 With the backend running, open:
 
-- `http://localhost:5041/swagger/index.html`
+```text
+http://localhost:5041/swagger
+```
 
-Swagger is a browser UI for testing API endpoints without writing code. You can expand an endpoint, fill in inputs, send the request, and see the response.
+### Login
 
-#### What you will see
+Expand `POST /api/auth/login`, click `Try it out`, and use one of these request bodies.
 
-- A list of endpoint groups such as `Auth`, `Me`, and `Manager`
-- A small arrow next to each endpoint that expands or collapses it
-- A `Try it out` button on each endpoint
-- An `Authorize` button near the top-right of the page
-
-#### First step: log in and get a token
-
-1. Expand `POST /api/auth/login`
-2. Click `Try it out`
-3. Replace the request body with one of the seed users below
-4. Click `Execute`
-5. In the response body, copy the value of `accessToken`
-
-Example employee login body:
+Manager:
 
 ```json
 {
@@ -78,86 +86,60 @@ Example employee login body:
 }
 ```
 
-Example manager login body:
+Employee:
 
 ```json
 {
-  "email": "manager@walforce.local",
+  "email": "liam.nguyen@walforce.local",
   "password": "WalForce!123"
 }
 ```
 
-#### Second step: authorize Swagger with the token
+Copy the `accessToken` value from the response.
 
-1. Click `Authorize` near the top-right of the page
-2. Paste only the raw token into the `Bearer` field
-3. Do not type `Bearer ` before the token
-4. Click `Authorize`
-5. Close the dialog
+### Authorize Swagger
 
-After this, Swagger will send your token automatically on protected requests.
+1. Click `Authorize`.
+2. Paste only the raw token into the `Bearer` field.
+3. Do not include the `Bearer ` prefix.
+4. Click `Authorize`.
+5. Close the dialog.
 
-#### Third step: call protected endpoints
+### Employee Flow
 
-For employee testing:
+Log in as `liam.nguyen@walforce.local`, authorize Swagger, then call:
 
-1. Expand `GET /api/me/profile`
-2. Click `Try it out`
-3. Click `Execute`
-4. Confirm the response shows the logged-in employee
-
-Then try:
-
-- `GET /api/me/schedule`
+- `GET /api/me/profile`
+- `GET /api/me/schedule?from=2026-04-13&to=2026-04-26`
 - `GET /api/me/availability`
 - `PUT /api/me/availability`
 
-For the schedule endpoints, enter dates like:
+Expected schedule result: Liam has 6 seeded shifts from `public.shifts`.
 
-- `from`: `2026-04-13`
-- `to`: `2026-04-20`
+### Manager Flow
 
-For manager testing:
+Log in as `ava.diaz@walforce.local`, authorize Swagger, then call:
 
-1. Log in as `manager@walforce.local`
-2. Authorize Swagger with the manager token
-3. Try:
-   - `GET /api/manager/roster`
-   - `GET /api/manager/schedule`
+- `GET /api/manager/roster`
+- `GET /api/manager/schedule?from=2026-04-13&to=2026-04-26`
 
-#### Common mistakes
+Expected manager data:
 
-- `401 Unauthorized` on `POST /api/auth/login`:
-  The email or password in the request body is wrong.
-- `401 Unauthorized` on employee or manager endpoints:
-  You are not authorized in Swagger yet, or the token was pasted incorrectly.
-- `403 Forbidden` on employee or manager endpoints:
-  The token is valid, but you are using the wrong role. For example, an employee token cannot call manager endpoints.
-- Nothing changes after a new login:
-  Click `Authorize` again and replace the old token with the new one.
+- Roster returns Liam Nguyen and Zoe Patel.
+- Manager schedule returns 12 employee-role shifts from `public.shifts`.
 
-#### Good beginner test flow
+## Seed Credentials
 
-1. Log in as `ava.diaz@walforce.local`
-2. Authorize Swagger with the returned token
-3. Call `GET /api/me/profile`
-4. Call `GET /api/me/schedule`
-5. Call `GET /api/me/availability`
-6. Log in as `manager@walforce.local`
-7. Authorize Swagger with the new manager token
-8. Call `GET /api/manager/roster`
-9. Call `GET /api/manager/schedule`
+All seeded PostgreSQL users use the password `WalForce!123`.
 
-### Seed credentials
+- `ava.diaz@walforce.local`: Manager
+- `liam.nguyen@walforce.local`: Employee
+- `zoe.patel@walforce.local`: Employee
 
-All seeded users use the password `WalForce!123`.
-
-- `manager@walforce.local`
-- `ava.diaz@walforce.local`
-- `liam.nguyen@walforce.local`
-- `zoe.patel@walforce.local`
+The JSON fallback data also includes `manager@walforce.local`, but Development should use PostgreSQL.
 
 ## Notes
 
-- CORS is configured for `http://localhost:3000` in development settings.
-- The current prototype persists availability changes back to the JSON data files under `Backend/WebServer/Data`.
+- CORS is configured for `http://localhost:3000`.
+- `appsettings.json` has an empty database connection string for fallback behavior.
+- `appsettings.Development.json` is configured for the local PostgreSQL server.
