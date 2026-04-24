@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Identity;
 using WebServer.Domain.Models;
@@ -49,8 +51,7 @@ public static class AuthEndpoints
             return TypedResults.Unauthorized();
         }
 
-        var verificationResult = passwordHasher.VerifyHashedPassword(user, user.PasswordHash, request.Password);
-        if (verificationResult == PasswordVerificationResult.Failed)
+        if (!VerifyPassword(user, request.Password, passwordHasher))
         {
             return TypedResults.Unauthorized();
         }
@@ -60,5 +61,27 @@ public static class AuthEndpoints
             new AuthenticatedUserDto(user.Id, user.FirstName, user.LastName, user.Email, user.Role));
 
         return TypedResults.Ok(response);
+    }
+
+    private static bool VerifyPassword(
+        UserRecord user,
+        string password,
+        IPasswordHasher<UserRecord> passwordHasher)
+    {
+        if (user.PasswordHash.StartsWith("AQ", StringComparison.Ordinal))
+        {
+            try
+            {
+                return passwordHasher.VerifyHashedPassword(user, user.PasswordHash, password) != PasswordVerificationResult.Failed;
+            }
+            catch (FormatException)
+            {
+                // Fall through to plaintext comparison for legacy database rows.
+            }
+        }
+
+        var expected = Encoding.UTF8.GetBytes(user.PasswordHash);
+        var actual = Encoding.UTF8.GetBytes(password);
+        return expected.Length == actual.Length && CryptographicOperations.FixedTimeEquals(expected, actual);
     }
 }
