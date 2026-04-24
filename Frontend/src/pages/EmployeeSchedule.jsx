@@ -7,50 +7,15 @@ function EmployeeSchedule() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
 
-// Testing data for UI testing (Just Frontend Testing)
- useEffect(() => {
-  const fetchSchedule = async () => {
-    try {
-      const dummySchedule = [
-        {
-          date: "2026-04-22",
-          startTime: "09:00",
-          endTime: "13:00",
-          location: "Store A",
-        },
-        {
-          date: "2026-04-23",
-          startTime: "14:00",
-          endTime: "18:00",
-          location: "Store B",
-        },
-        {
-          date: "2026-04-25",
-          startTime: "10:00",
-          endTime: "16:00",
-          location: "Store C",
-        },
-      ];
-
-      setSchedule(dummySchedule);
-    } catch (err) {
-      console.error(err);
-      setError("Failed to load schedule.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  fetchSchedule();
-}, []);
-
-/*
-Use this when the backend is connected and the schedule endpoint is available.
-
 useEffect(() => {
   const fetchSchedule = async () => {
     try {
-      const response = await api.get("/me/schedule");
+      const response = await api.get("/me/schedule", {
+      params: {
+      from: "2026-04-13",
+      to: "2026-04-26",
+      },
+    });
       setSchedule(response.data);
     } catch (err) {
       console.error(err);
@@ -62,7 +27,7 @@ useEffect(() => {
 
   fetchSchedule();
 }, []);
-*/
+
 
   return (
     <div>

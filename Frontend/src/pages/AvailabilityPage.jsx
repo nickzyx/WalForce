@@ -21,15 +21,45 @@ function AvailabilityPage() {
     }));
   };
 
-// Testing data for UI testing (Just Frontend Testing)
 const handleSubmit = async (event) => {
   event.preventDefault();
   setMessage("");
   setError("");
 
-  try {
-    console.log("Submitted availability:", formData);
+  const allDays = [
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+    "Sunday",
+  ];
 
+  const payload = {
+    notes: null,
+    days: allDays.map((currentDay) => {
+      if (currentDay === formData.day) {
+        return {
+          day: currentDay,
+          windows: [
+            {
+              startTime: `${formData.startTime}:00`,
+              endTime: `${formData.endTime}:00`,
+            },
+          ],
+        };
+      }
+
+      return {
+        day: currentDay,
+        windows: [],
+      };
+    }),
+  };
+
+  try {
+    await api.put("/me/availability", payload);
     setMessage("Availability submitted successfully.");
     setFormData({
       day: "",
@@ -42,28 +72,6 @@ const handleSubmit = async (event) => {
   }
 };
 
-/*
-Use this when the backend availability endpoint is available.
-
-const handleSubmit = async (event) => {
-  event.preventDefault();
-  setMessage("");
-  setError("");
-
-  try {
-    await api.put("/me/availability", formData);
-    setMessage("Availability submitted successfully.");
-    setFormData({
-      day: "",
-      startTime: "",
-      endTime: "",
-    });
-  } catch (err) {
-    console.error(err);
-    setError("Failed to submit availability.");
-  }
-};
-*/
 
   return (
     <div>

@@ -40,61 +40,36 @@
   },
   {
     "userId": "f26f280c-8d7c-49b6-a4f1-b79042f2f202",
-    "notes": "Can close most weekdays.",
+    "notes": null,
     "days": [
       {
         "day": "Monday",
-        "windows": [
-          {
-            "startTime": "12:00:00",
-            "endTime": "20:00:00"
-          }
-        ]
+        "windows": []
       },
       {
         "day": "Tuesday",
-        "windows": [
-          {
-            "startTime": "10:00:00",
-            "endTime": "18:00:00"
-          }
-        ]
+        "windows": []
       },
       {
         "day": "Wednesday",
         "windows": [
           {
-            "startTime": "12:00:00",
-            "endTime": "20:00:00"
+            "startTime": "05:00:00",
+            "endTime": "09:00:00"
           }
         ]
       },
       {
         "day": "Thursday",
-        "windows": [
-          {
-            "startTime": "10:00:00",
-            "endTime": "18:00:00"
-          }
-        ]
+        "windows": []
       },
       {
         "day": "Friday",
-        "windows": [
-          {
-            "startTime": "12:00:00",
-            "endTime": "20:00:00"
-          }
-        ]
+        "windows": []
       },
       {
         "day": "Saturday",
-        "windows": [
-          {
-            "startTime": "09:00:00",
-            "endTime": "17:00:00"
-          }
-        ]
+        "windows": []
       },
       {
         "day": "Sunday",
