@@ -14,15 +14,24 @@ internal sealed class SmokeTestRunner
     public async Task RunAsync()
     {
         var dataRoot = CreateTempDataCopy();
-        await using var server = await StartServerAsync(dataRoot);
+        var databaseConnectionString = Environment.GetEnvironmentVariable("WALFORCE_TEST_DATABASE_CONNECTION");
+        await using var server = await StartServerAsync(dataRoot, databaseConnectionString);
         using var http = new HttpClient { BaseAddress = new Uri("http://127.0.0.1:5041") };
 
         await WaitForServerAsync(http);
 
         await TestSwaggerAsync(http);
-        await TestEmployeeFlowAsync(http);
-        await TestManagerFlowAsync(http);
-        await TestAvailabilityPersistenceAsync(http);
+        if (string.IsNullOrWhiteSpace(databaseConnectionString))
+        {
+            await TestEmployeeFlowAsync(http);
+            await TestManagerFlowAsync(http);
+            await TestAvailabilityPersistenceAsync(http);
+        }
+        else
+        {
+            await TestPostgresEmployeeScheduleFlowAsync(http);
+            await TestPostgresManagerScheduleFlowAsync(http);
+        }
 
         Console.WriteLine("Smoke tests passed.");
     }
@@ -52,6 +61,8 @@ internal sealed class SmokeTestRunner
         var swaggerJson = await swaggerJsonResponse.Content.ReadAsStringAsync();
         Assert(swaggerJson.Contains("\"title\": \"WalForce Backend API\"", StringComparison.Ordinal), "Swagger JSON should expose the WalForce API title.");
         Assert(swaggerJson.Contains("\"/api/auth/login\"", StringComparison.Ordinal), "Swagger JSON should include the auth login endpoint.");
+        Assert(swaggerJson.Contains("\"/api/me/schedule\"", StringComparison.Ordinal), "Swagger JSON should include the employee schedule endpoint.");
+        Assert(swaggerJson.Contains("\"/api/manager/schedule\"", StringComparison.Ordinal), "Swagger JSON should include the manager schedule endpoint.");
 
         using var swaggerUiResponse = await http.GetAsync("/swagger/index.html");
         swaggerUiResponse.EnsureSuccessStatusCode();
@@ -78,6 +89,42 @@ internal sealed class SmokeTestRunner
 
         using var forbidden = await http.GetAsync("/api/me/schedule?from=2026-04-13&to=2026-04-19");
         Assert(forbidden.StatusCode == HttpStatusCode.Forbidden, "Managers must not access the employee schedule endpoint.");
+    }
+
+    private static async Task TestPostgresEmployeeScheduleFlowAsync(HttpClient http)
+    {
+        var login = await LoginAsync(http, "liam.nguyen@walforce.local", "WalForce!123");
+        Assert(login.User.Role == "Employee", "Postgres employee login should return the Employee role.");
+
+        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
+
+        var profile = await GetRequiredAsync<ProfileResponse>(http, "/api/me/profile");
+        Assert(profile.Email == "liam.nguyen@walforce.local", "Postgres employee profile should match the logged-in user.");
+
+        var schedule = await GetRequiredAsync<List<EmployeeShiftResponse>>(http, "/api/me/schedule?from=2026-04-13&to=2026-04-26");
+        Assert(schedule.Count == 6, "Postgres employee schedule should return Liam's six seeded shifts.");
+        Assert(schedule[0].RoleLabel == "Stock Associate", "Postgres employee schedule should return role labels from public.shifts.");
+
+        using var forbidden = await http.GetAsync("/api/manager/roster");
+        Assert(forbidden.StatusCode == HttpStatusCode.Forbidden, "Postgres employees must not access manager endpoints.");
+    }
+
+    private static async Task TestPostgresManagerScheduleFlowAsync(HttpClient http)
+    {
+        var login = await LoginAsync(http, "ava.diaz@walforce.local", "WalForce!123");
+        Assert(login.User.Role == "Manager", "Postgres manager login should return the Manager role.");
+
+        http.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", login.AccessToken);
+
+        var roster = await GetRequiredAsync<List<ManagerRosterResponse>>(http, "/api/manager/roster");
+        Assert(roster.Count == 2, "Postgres manager roster should return the two employee-role users.");
+
+        var schedule = await GetRequiredAsync<List<ManagerShiftResponse>>(http, "/api/manager/schedule?from=2026-04-13&to=2026-04-26");
+        Assert(schedule.Count == 12, "Postgres manager schedule should return the employee-role team shifts from public.shifts.");
+        Assert(schedule.All(shift => shift.EmployeeName is "Liam Nguyen" or "Zoe Patel"), "Postgres manager schedule should join shifts to employee names.");
+
+        using var forbidden = await http.GetAsync("/api/me/schedule?from=2026-04-13&to=2026-04-19");
+        Assert(forbidden.StatusCode == HttpStatusCode.Forbidden, "Postgres managers must not access the employee schedule endpoint.");
     }
 
     private static async Task TestAvailabilityPersistenceAsync(HttpClient http)
@@ -155,7 +202,7 @@ internal sealed class SmokeTestRunner
         Assert(started, "Server did not become ready within 30 seconds.");
     }
 
-    private static async Task<ServerProcess> StartServerAsync(string dataRoot)
+    private static async Task<ServerProcess> StartServerAsync(string dataRoot, string? databaseConnectionString)
     {
         var projectPath = FindPath("Backend", "WebServer", "WebServer.csproj");
         var startInfo = new ProcessStartInfo("dotnet", $"run --no-build --project \"{projectPath}\" --launch-profile http")
@@ -171,6 +218,11 @@ internal sealed class SmokeTestRunner
         startInfo.Environment["ASPNETCORE_URLS"] = "http://127.0.0.1:5041";
         startInfo.Environment["Auth__SigningKey"] = "WalForceSmokeTestsSigningKey1234567890!";
         startInfo.Environment["Data__RootPath"] = dataRoot;
+        if (!string.IsNullOrWhiteSpace(databaseConnectionString)
+            && !string.Equals(databaseConnectionString, "USE_APPSETTINGS_DEVELOPMENT", StringComparison.OrdinalIgnoreCase))
+        {
+            startInfo.Environment["Database__ConnectionString"] = databaseConnectionString;
+        }
 
         var process = Process.Start(startInfo) ?? throw new InvalidOperationException("Failed to start the backend process.");
         return await ServerProcess.CreateAsync(process);

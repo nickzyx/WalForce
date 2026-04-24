@@ -2,6 +2,7 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi;
+using Npgsql;
 using WebServer.Configuration;
 using WebServer.Domain.Models;
 using WebServer.Domain.Repositories;
@@ -49,9 +50,13 @@ public static class ServiceCollectionExtensions
         services.Configure<AuthOptions>(configuration.GetSection(AuthOptions.SectionName));
         services.Configure<CorsOptions>(configuration.GetSection(CorsOptions.SectionName));
         services.Configure<DataOptions>(configuration.GetSection(DataOptions.SectionName));
+        services.Configure<DatabaseOptions>(configuration.GetSection(DatabaseOptions.SectionName));
 
         var authOptions = configuration.GetSection(AuthOptions.SectionName).Get<AuthOptions>() ?? new AuthOptions();
         var corsOptions = configuration.GetSection(CorsOptions.SectionName).Get<CorsOptions>() ?? new CorsOptions();
+        var databaseConnectionString =
+            configuration.GetSection(DatabaseOptions.SectionName).Get<DatabaseOptions>()?.ConnectionString
+            ?? configuration.GetConnectionString("WalForce");
 
         services.AddCors(options =>
         {
@@ -76,10 +81,21 @@ public static class ServiceCollectionExtensions
         services.AddAuthorization();
         services.AddSingleton<IPasswordHasher<UserRecord>, PasswordHasher<UserRecord>>();
         services.AddSingleton<IJwtTokenService, JwtTokenService>();
-        services.AddSingleton<JsonFileDataStore>();
-        services.AddSingleton<IUserRepository, JsonUserRepository>();
-        services.AddSingleton<IScheduleRepository, JsonScheduleRepository>();
-        services.AddSingleton<IAvailabilityRepository, JsonAvailabilityRepository>();
+
+        if (string.IsNullOrWhiteSpace(databaseConnectionString))
+        {
+            services.AddSingleton<JsonFileDataStore>();
+            services.AddSingleton<IUserRepository, JsonUserRepository>();
+            services.AddSingleton<IScheduleRepository, JsonScheduleRepository>();
+            services.AddSingleton<IAvailabilityRepository, JsonAvailabilityRepository>();
+        }
+        else
+        {
+            services.AddSingleton(_ => NpgsqlDataSource.Create(databaseConnectionString));
+            services.AddSingleton<IUserRepository, PostgresUserRepository>();
+            services.AddSingleton<IScheduleRepository, PostgresScheduleRepository>();
+            services.AddSingleton<IAvailabilityRepository, PostgresAvailabilityRepository>();
+        }
 
         return services;
     }
